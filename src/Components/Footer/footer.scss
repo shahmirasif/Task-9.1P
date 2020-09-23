@@ -1,0 +1,83 @@
+footer {
+	background-color: #e1e1e1;
+	padding: 0 150px;
+	font-family: Roboto;
+
+	.footer-top {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		border-bottom: 1px solid lightgrey;
+		padding-bottom: 80px;
+
+		.information {
+			margin-top: 80px;
+			width: 400px;
+
+			.logo {
+				font-weight: bold;
+				font-size: 2em;
+			}
+
+			.footer-about {
+				padding: 20px 0;
+				font-size: 0.9rem;
+				line-height: 1.5em;
+			}
+		}
+
+		.subscriptions {
+			margin-top: 80px;
+			width: 350px;
+
+			h3 {
+				font-size: 1.5em;
+				font-weight: 500;
+			}
+
+			p {
+				font-size: 0.9rem;
+				padding: 0;
+			}
+
+			input[type="text"] {
+				outline: none;
+				border: none;
+				background-color: white;
+				padding: 10px 10px;
+				width: 250px;
+				box-sizing: border-box;
+			}
+
+			button {
+				border: none;
+				outline: none;
+				background-color: black;
+				color: white;
+				padding: 10px 10px;
+				cursor: pointer;
+			}
+
+			.social-icons {
+				margin-top: 20px;
+				display: flex;
+
+				.icon {
+					width: 25px;
+					height: 25px;
+					padding: 0 5px;
+					cursor: pointer;
+
+					img {
+						max-width: 100%;
+						height: auto;
+					}
+				}
+			}
+		}
+	}
+
+	.footer-bottom {
+		padding: 20px 0;
+	}
+}

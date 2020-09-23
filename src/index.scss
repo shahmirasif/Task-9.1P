@@ -1,0 +1,50 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+}
+
+// Landing Page
+.hero {
+	background: url('./images/background/hero-bg.jpeg') no-repeat;
+	background-size: 100% 170%;
+	background-position: 0 30%;
+	height: 450px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	flex-direction: column;
+
+	h1 {
+		font-weight: bolder;
+		font: 4em roboto;
+		word-spacing: 0.2em;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		font: 1.5em roboto;
+		letter-spacing: 1px;
+	}
+}
+
+.requesters {
+	width: 60%;
+	margin: 0 auto;
+	padding-bottom: 100px;
+
+	h2 {
+		text-align: center;
+		margin: 1.5em 0 1em 0;
+		font: 2.5em Roboto;
+		font-weight: bold;
+	}
+}
