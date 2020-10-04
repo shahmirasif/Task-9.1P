@@ -274,54 +274,26 @@ footer {
 }
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './header.scss';
+import Header from './Components/Header/Header';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Landing from './Landing';
+import Footer from './Components/Footer/Footer';
+import Requests from './Requests';
 
-export default function Header () {
-	const links = [
-		{
-			link : 'How it works',
-			to   : '/how_it_works'
-		},
-		{
-			link : 'Requesters',
-			to   : '/requests'
-		},
-		{
-			link : 'Workers',
-			to   : '/workers'
-		},
-		{
-			link : 'Pricing',
-			to   : '/pricing'
-		},
-		{
-			link : 'About',
-			to   : '/about'
-		}
-	];
-
-	const NavLink = ({ links }) => {
-		const navLinks = links.map(({ link, to }, index) => (
-			<Link className="nav-link" to={to} key={index}>
-				{link}
-			</Link>
-		));
-
-		return <nav>{navLinks}</nav>;
-	};
-
+function App () {
 	return (
-		<header>
-			<div className="logo">iCrowd</div>
-			<NavLink links={links} />
-			<Link className="button" to="/login">
-				Sign In
-			</Link>
-		</header>
+		<Router>
+			<div className="App">
+				<Header />
+				<Route exact path="/" component={Landing} />
+				<Route exact path="/requests" component={Requests} />
+				<Footer />
+			</div>
+		</Router>
 	);
 }
 
+export default App;
 header {
 	display: flex;
 	width: 100%;
@@ -424,4 +396,220 @@ export default function RequestCard ({ cards }) {
 	));
 
 	return <div className="request-cards-container">{Cards}</div>;
+}
+
+import React from 'react';
+
+export default function Taskdescription ({ change }) {
+	return (
+		<div className="new-request-description">
+			<div className="new-request-description-text">Describe your task to Workers</div>
+			<div className="new-request-description-content">
+				<Label htmlFor="request-title" text="Title">
+					<RequestInput label="title" change={change} />
+				</Label>
+				<Label htmlFor="request-description" text="Description">
+					<RequestInput label="description" change={change} />
+				</Label>
+				<Label htmlFor="request-date" text="Expiry Date">
+					<RequestInput type="date" label="date" change={change} />
+				</Label>
+			</div>
+		</div>
+	);
+}
+
+const RequestInput = ({ type = 'text', label, change }) => {
+	return <input type={type} name={label} id={`request-${label}`} onChange={(e) => change(e, label)} required />;
+};
+
+const Label = ({ htmlFor, text, children }) => {
+	return (
+		<div className="description-row">
+			<label htmlFor={htmlFor}>{text}</label>
+			{children}
+		</div>
+	);
+};
+
+import React from 'react';
+
+export default function TaskRequirement () {
+	return (
+		<div className="new-request-requirements">
+			<div className="new-request-requirements-text">Worker Requirement</div>
+			<div className="new-request-requirements-content">
+				<div className="new-request-requirements-row">
+					<div className="question">Require Master Workers</div>
+					<div className="answer">
+						<input id="master-worker-yes" type="radio" name="master-workers" value={true} />
+						<label htmlFor="master-worker-yes">Yes</label>
+
+						<input id="master-worker-no" type="radio" name="master-workers" value={false} checked />
+						<label htmlFor="master-worker-no">No</label>
+					</div>
+				</div>
+				<div className="new-request-requirements-row">
+					<div className="question">Reward per response</div>
+					<div className="answer">
+						<input type="text" name="reward" />
+					</div>
+				</div>
+				<div className="new-request-requirements-row">
+					<div className="question">Number of workers</div>
+					<div className="answer">
+						<input type="text" name="numOfWorkers" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+import React, { Fragment } from 'react';
+
+export default function Tasksettings ({ task, title, desc, date }) {
+	const today = new Date();
+
+	const RequestTask = (task) => {
+		let Task;
+		switch (task) {
+			case 'Choice Task':
+				Task = <ChoiceTask />;
+				break;
+			case 'Decision-Making Task':
+				Task = <DecisionMakingTask />;
+				break;
+			case 'Sentence-Level Task':
+				Task = <SentenceLevelTask />;
+				break;
+			default:
+				console.error('Unexpected error');
+		}
+		return Task;
+	};
+
+	return (
+		<div className="new-request-settings">
+			<div className="new-request-settings-text">Setting up your Task</div>
+			<div className="new-request-settings-content">
+				<div className="new-request-title">{title || 'Title'}</div>
+				<div className="new-request-desc">{desc || 'Description'}</div>
+				<div className="new-request-date">Expires on : {date || `${today.getFullYear()}-${today.getMonth()}-${today.getDay()}`}</div>
+			</div>
+			{RequestTask(task)}
+		</div>
+	);
+}
+
+const ChoiceTask = () => {
+	const questions = [
+		{
+			question : 'How many years of experience do you have in React?',
+			answer   : [ 'Less than a year', '1-2 years', '3-4 years', 'More than 4 years' ]
+		},
+		{
+			question : "What's your favourite language?",
+			answer   : [ 'English', 'JavaScript', 'French', 'German' ]
+		}
+	];
+	return (
+		<div className="choice-task">
+			{questions.map(({ question, answer }, index) => {
+				return (
+					<div className="choice-task-row" key={index}>
+						<div className="question">{question}</div>
+						<div className="answer">
+							<Radio options={answer} name={`answer${index}`} />
+						</div>
+					</div>
+				);
+			})}
+		</div>
+	);
+};
+
+const DecisionMakingTask = () => {
+	const questions = [
+		{
+			question : 'Programmers have no life.',
+			answer   : true
+		},
+		{
+			question : "Programmers live under their parent's basement",
+			answer   : true
+		},
+		{
+			question : 'Programmers go out and have a social life',
+			answer   : false
+		}
+	];
+
+	return (
+		<div className="decision-making-task">
+			{questions.map(({ question }, index) => {
+				return (
+					<div className="decision-making-task-row" key={index}>
+						<div className="question">{question}</div>
+						<div className="answer">
+							<Radio options={[ true, false ]} name={`answer${index}`} />
+						</div>
+					</div>
+				);
+			})}
+		</div>
+	);
+};
+
+const SentenceLevelTask = () => {
+	const questions = [
+		'Which JavaScript frameworks do you like the most? Why?',
+		'Can you explain the 2 pillars of JavaScript.',
+		'Explain how useEffect works in React'
+	];
+	return (
+		<div className="sentence-level-task">
+			{questions.map((question, index) => {
+				return (
+					<div className="sentence-level-task-row" key={index}>
+						<div className="question">{question}</div>
+						<div className="answer">
+							<textarea name={`answer${index}`} required />
+						</div>
+					</div>
+				);
+			})}
+		</div>
+	);
+};
+
+const Radio = ({ options = [], name }) => {
+	const answer = options.map((option, index) => (
+		<Fragment key={index}>
+			<input id={`name_${index}`} type="radio" name={name} value={option} required />
+			<label htmlFor={`name_${index}`}>{`${option}`}</label>
+		</Fragment>
+	));
+	return answer;
+};
+
+import React, { Fragment } from 'react';
+
+export default function Tasktype ({ types, task, change }) {
+	const tasks = types.map((type, index) => (
+		<Fragment key={index}>
+			<input type="radio" id={`task${index}`} name="task" value={type} checked={task === type} onChange={change} />
+			<label htmlFor={`task${index}`}>{type}</label>
+		</Fragment>
+	));
+
+	return (
+		<div className="new-requests">
+			<div className="new-requests-title">New Requester Task</div>
+			<div className="new-requests-type">
+				<div className="new-requests-text">Select Task Type:</div>
+				<div className="task-types">{tasks}</div>
+			</div>
+		</div>
+	);
 }
